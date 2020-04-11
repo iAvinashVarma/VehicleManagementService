@@ -1,0 +1,53 @@
+﻿@{
+    var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+    var fileInfo = new System.IO.FileInfo(assembly.Location);
+    var lastModified = fileInfo.LastWriteTime;
+    DateTime utcDateTime = DateTime.SpecifyKind(lastModified, DateTimeKind.Utc);
+    var lastUpdateMessage = string.Format("{0:f}", utcDateTime);
+    var ApplicationName = "Vehicle Management System API";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(@ApplicationName, "Index", "Help", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a rel="noopener noreferrer" href="#" target="_blank">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="pull-left">Copyright &copy; @DateTime.Now.Year - @ApplicationName by Avi</p>
+            <div class="pull-right">
+                <ul class="list-inline">
+                    <li>Last Update: <strong>@lastUpdateMessage</strong> (UTC)</li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
