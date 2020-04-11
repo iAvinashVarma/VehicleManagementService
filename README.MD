@@ -10,6 +10,10 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ## Postman
 
+### Documentation
+
+* [Postman Documenter](https://documenter.getpostman.com/view/1806674/SzYgRFT8)
+
 ### Collection
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/3252d53ebc33e7854cec)
+* [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d211da1cc40ce4fb6540)
