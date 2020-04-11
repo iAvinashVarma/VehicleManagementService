@@ -53,6 +53,19 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get driver information based on identity.
+        /// </summary>
+        /// <param name="identity">Identity</param>
+        /// <returns>Vehicle</returns>
+        [HttpGet]
+        public HttpResponseMessage GetByIdentity(string identity)
+        {
+            HttpResponseMessage httpResponseMessage;
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driverRepository.GetEntityByIdentity(identity));
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Create new driver.
         /// </summary>
         /// <param name="driver">Driver Information</param>
@@ -62,6 +75,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Post([FromBody] Driver driver)
         {
             HttpResponseMessage httpResponseMessage;
+            driver.ModifiedDate = DateTime.Now;
+            driver.CreatedDate = DateTime.Now;
             var addedDriver = driverRepository.Add(driver);
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, addedDriver);
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{addedDriver.Id}");
@@ -79,6 +94,7 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Put(string id, [FromBody] Driver driver)
         {
             driver.Id = new ObjectId(id);
+            driver.ModifiedDate = DateTime.Now;
             HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, driverRepository.Update(driver));
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{driver.Id}");
             return httpResponseMessage;

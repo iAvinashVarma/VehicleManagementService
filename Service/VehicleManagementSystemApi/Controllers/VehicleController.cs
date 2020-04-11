@@ -53,6 +53,19 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get vehicle information based on RegistrationNumber.
+        /// </summary>
+        /// <param name="registrationNumber">RegistrationNumber</param>
+        /// <returns>Vehicle</returns>
+        [HttpGet]
+        public HttpResponseMessage GetByRegistrationNumber(string registrationNumber)
+        {
+            HttpResponseMessage httpResponseMessage;
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicleRepository.GetEntityByRegistrationNumber(registrationNumber));
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Create new vehicle.
         /// </summary>
         /// <param name="vehicle">Vehicle Information</param>
@@ -62,6 +75,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Post([FromBody] Vehicle vehicle)
         {
             HttpResponseMessage httpResponseMessage;
+            vehicle.ModifiedDate = DateTime.Now;
+            vehicle.CreatedDate = DateTime.Now;
             var addedVehicle = vehicleRepository.Add(vehicle);
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, addedVehicle);
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{addedVehicle.Id}");
@@ -79,6 +94,7 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Put(string id, [FromBody] Vehicle vehicle)
         {
             vehicle.Id = new ObjectId(id);
+            vehicle.ModifiedDate = DateTime.Now;
             HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, vehicleRepository.Update(vehicle));
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{vehicle.Id}");
             return httpResponseMessage;

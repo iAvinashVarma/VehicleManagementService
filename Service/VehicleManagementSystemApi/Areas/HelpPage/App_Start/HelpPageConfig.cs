@@ -2,6 +2,7 @@
 // package to your project.
 ////#define Handle_PageResultOfT
 
+using MongoDB.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using VehicleManagementSystemBusiness.Model;
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
@@ -44,6 +46,42 @@ namespace VehicleManagementSystemApi.Areas.HelpPage
             //    {typeof(string), "sample string"},
             //    {typeof(IEnumerable<string>), new string[]{"sample 1", "sample 2"}}
             //});
+
+            config.SetSampleObjects(new Dictionary<Type, object>
+            {
+                {typeof(string), "Sample"},
+                {typeof(IEnumerable<string>), new string[]{"Sample1", "Sample2"}},
+                {typeof(Vehicle), new Vehicle { Name = "AudiQ7", RegistrationNumber = "NZ007", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now } },
+                {typeof(Driver),new Driver { Name="Rocky", Age=36, Phone="22123456", Identity="NZ1234", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now} },
+                {typeof(VehicleMonitor), new VehicleMonitor
+                {
+                    DriverId = new ObjectId("5e9013a6d7745c0fa4834241"),
+                    VehicleId = new ObjectId("5dbd08a6dcb8333db8691345"),
+                    Location = new VehicleLocation
+                    {
+                        Latitude = -36.8667,
+                        Longitude = 174.7667
+                    },
+                    Pressure = new VehiclePressure
+                    {
+                        PressurePsi = 30.0
+                    },
+                    Temperature = new VehicleTemperature
+                    {
+                        TemperatureCelsius = 19.0
+                    },
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                } },
+                { typeof(DriverMessenger), new DriverMessenger
+                {
+                    DriverId = new ObjectId("5e9013a6d7745c0fa4834241"),
+                    VehicleId = new ObjectId("5dbd08a6dcb8333db8691345"),
+                    Message = "On the way to deliver the package.",
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                } }
+            });
 
             // Extend the following to provide factories for types not handled automatically (those lacking parameterless
             // constructors) or for which you prefer to use non-default property values. Line below provides a fallback

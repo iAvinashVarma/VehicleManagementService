@@ -59,6 +59,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Post([FromBody] DriverMessenger driverMessenger)
         {
             HttpResponseMessage httpResponseMessage;
+            driverMessenger.ModifiedDate = DateTime.Now;
+            driverMessenger.CreatedDate = DateTime.Now;
             var addedDriverMessage = driverMessengerRepository.Add(driverMessenger);
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, addedDriverMessage);
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{addedDriverMessage.Id}");
@@ -76,6 +78,7 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Put(string id, [FromBody] DriverMessenger driverMessenger)
         {
             driverMessenger.Id = new ObjectId(id);
+            driverMessenger.ModifiedDate = DateTime.Now;
             HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, driverMessengerRepository.Update(driverMessenger));
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{driverMessenger.Id}");
             return httpResponseMessage;

@@ -30,9 +30,9 @@ namespace VehicleManagementSystemBusiness.Model
         [BsonElement("identity")]
         public string Identity { get; set; }
 
-        [JsonProperty(PropertyName = "updatedDate")]
-        [BsonElement("updatedDate")]
-        public DateTime UpdatedDate { get; set; }
+        [JsonProperty(PropertyName = "createdDate")]
+        [BsonElement("createdDate")]
+        public DateTime CreatedDate { get; set; }
 
         [JsonProperty(PropertyName = "modifiedDate")]
         [BsonElement("modifiedDate")]

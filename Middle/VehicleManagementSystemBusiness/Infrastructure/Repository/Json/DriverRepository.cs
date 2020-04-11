@@ -19,9 +19,9 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Repository.Json
             return GetAll().Where(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public IEnumerable<Driver> GetEntitiesByIdentity(string identity)
+        public Driver GetEntityByIdentity(string identity)
         {
-            return GetAll().Where(p => p.Identity.Equals(identity, StringComparison.OrdinalIgnoreCase));
+            return GetAll().FirstOrDefault(p => p.Identity.Equals(identity, StringComparison.OrdinalIgnoreCase));
         }
 
         public Driver Patch(Driver driver)

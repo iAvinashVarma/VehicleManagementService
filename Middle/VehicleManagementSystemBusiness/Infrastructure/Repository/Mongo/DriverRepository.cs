@@ -22,10 +22,10 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Repository.Mongo
             return result;
         }
 
-        public IEnumerable<Driver> GetEntitiesByIdentity(string identity)
+        public Driver GetEntityByIdentity(string identity)
         {
             var filter = Builders<Driver>.Filter.Eq(u => u.Identity, identity);
-            var result = _mongoCollection.Find(filter).ToList();
+            var result = _mongoCollection.Find(filter).FirstOrDefault();
             return result;
         }
 

@@ -6,6 +6,8 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Interface
     {
         IEnumerable<TEntity> GetEntitiesByName(string name);
 
+        TEntity GetEntityByRegistrationNumber(string registrationNumber);
+
         TEntity Patch(TEntity entity);
     }
 }

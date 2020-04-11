@@ -59,6 +59,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Post([FromBody] VehicleMonitor vehicleMonitor)
         {
             HttpResponseMessage httpResponseMessage;
+            vehicleMonitor.ModifiedDate = DateTime.Now;
+            vehicleMonitor.CreatedDate = DateTime.Now;
             var addedVehicleMonitor = vehicleMonitorRepository.Add(vehicleMonitor);
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, addedVehicleMonitor);
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{addedVehicleMonitor.Id}");
@@ -76,6 +78,7 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage Put(string id, [FromBody] VehicleMonitor vehicleMonitor)
         {
             vehicleMonitor.Id = new ObjectId(id);
+            vehicleMonitor.ModifiedDate = DateTime.Now;
             HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.Created, vehicleMonitorRepository.Update(vehicleMonitor));
             httpResponseMessage.Headers.Location = new Uri($"{Request.RequestUri}/{vehicleMonitor.Id}");
             return httpResponseMessage;

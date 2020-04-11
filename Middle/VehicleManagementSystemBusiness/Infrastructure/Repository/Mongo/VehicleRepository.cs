@@ -22,6 +22,13 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Repository.Mongo
             return result;
         }
 
+        public Vehicle GetEntityByRegistrationNumber(string registrationNumber)
+        {
+            var filter = Builders<Vehicle>.Filter.Eq(u => u.RegistrationNumber, registrationNumber);
+            var result = _mongoCollection.Find(filter).FirstOrDefault();
+            return result;
+        }
+
         public Vehicle Patch(Vehicle patch)
         {
             var filter = Builders<Vehicle>.Filter.Eq(u => u.Id, patch.Id);

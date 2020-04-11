@@ -3,56 +3,56 @@
         "_id": "5dbd08a6dcb8333db8691345",
         "name": "AudiQ7",
         "registrationNumber": "NZ007",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-10T03:34:51.4426472+00:00"
     },
     {
         "_id": "5e91af2f7709950e78134973",
         "name": "BMW",
         "registrationNumber": "NZ008",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:51:11.207924+00:00"
     },
     {
         "_id": "5e91af587709960e78d5d574",
         "name": "Volkswagen",
         "registrationNumber": "NZ009",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:51:52.1339559+00:00"
     },
     {
         "_id": "5e91af7b7709970e78f56507",
         "name": "AstonMartin",
         "registrationNumber": "NZ010",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:52:27.3036079+00:00"
     },
     {
         "_id": "5e91afa77709980e7812c3d1",
         "name": "Benz",
         "registrationNumber": "NZ011",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:53:11.0392592+00:00"
     },
     {
         "_id": "5e91afc87709990e785c0f85",
         "name": "Kia",
         "registrationNumber": "NZ012",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:53:44.6330155+00:00"
     },
     {
         "_id": "5e91b02f77099c0e786ae7bd",
         "name": "Hyundai",
         "registrationNumber": "NZ013",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:55:27.8034045+00:00"
     },
     {
         "_id": "5e91b05977099d0e78f45a29",
         "name": "Mitsubishi",
         "registrationNumber": "NZ014",
-        "updatedDate": "2020-04-10T03:34:51.4426472+00:00",
+        "createdDate": "2020-04-10T03:34:51.4426472+00:00",
         "modifiedDate": "2020-04-11T11:56:09.1691899+00:00"
     }
 ]

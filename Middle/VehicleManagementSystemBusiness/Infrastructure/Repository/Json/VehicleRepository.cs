@@ -19,6 +19,11 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Repository.Json
             return GetAll().Where(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
+        public Vehicle GetEntityByRegistrationNumber(string registrationNumber)
+        {
+            return GetAll().FirstOrDefault(p => p.RegistrationNumber.Equals(registrationNumber, StringComparison.OrdinalIgnoreCase));
+        }
+
         public Vehicle Patch(Vehicle vehicle)
         {
             var person = GetById(vehicle.Id);
