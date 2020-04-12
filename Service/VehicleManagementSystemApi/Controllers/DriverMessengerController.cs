@@ -41,9 +41,9 @@ namespace VehicleManagementSystemApi.Controllers
             var driverMessenger = driverMessengerRepository.GetAll().ToList();
             var filterDriverMessenger = driverMessenger.Select(m => new
             {
-                Vehicle = vehicleRepository.GetById(m.VehicleId),
-                Driver = driverRepository.GetById(m.DriverId),
-                VehicleMonitor = m
+                vehicle = vehicleRepository.GetById(m.VehicleId),
+                driver = driverRepository.GetById(m.DriverId),
+                driverMessage = m
             });
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger);
             return httpResponseMessage;
