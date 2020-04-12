@@ -8,6 +8,14 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ---
 
+## Entity Relationship
+
+![](Images/VMSEntityRelationship.jpg)
+
+## DevOps Flow
+
+![](Images/VMSDevOps.jpg)
+
 ## Environment Variables
 
 > Need to configure environment variables in process or user or system level.
