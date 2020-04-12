@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace VehicleManagementSystemApi
 {
+    /// <summary>
+    /// Web Api Configuration
+    /// </summary>
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Web Api Configuration Registration
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services

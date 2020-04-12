@@ -42,6 +42,21 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get Driver information.
+        /// </summary>
+        /// <param name="id">DriverId</param>
+        /// <returns>Driver</returns>
+        [Route("api/Driver/{id}")]
+        [HttpGet]
+        public HttpResponseMessage Get(string id)
+        {
+            HttpResponseMessage httpResponseMessage;
+            var driver = driverRepository.GetById(new ObjectId(id));
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driver);
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Get driver information based on name.
         /// </summary>
         /// <param name="name">Name</param>
