@@ -91,7 +91,7 @@ namespace VehicleManagementSystemApi.Controllers
         /// <param name="id">Existing Driver Messenger id</param>
         /// <param name="driverMessenger">Existing DriverMessenger information</param>
         /// <returns>Updated DriverMessenger</returns>
-        // PUT api/values/5
+        [Route("api/DriverMessenger/{id}")]
         [HttpPut]
         public HttpResponseMessage Put(string id, [FromBody] DriverMessenger driverMessenger)
         {
@@ -107,7 +107,7 @@ namespace VehicleManagementSystemApi.Controllers
         /// </summary>
         /// <param name="id">Existing Driver Messenger id</param>
         /// <returns>Deleted Driver Messenger information</returns>
-        // DELETE api/values/5
+        [Route("api/DriverMessenger/{id}")]
         [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {

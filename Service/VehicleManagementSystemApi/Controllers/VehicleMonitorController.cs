@@ -91,7 +91,7 @@ namespace VehicleManagementSystemApi.Controllers
         /// <param name="id">Existing vehicle monitor id</param>
         /// <param name="vehicleMonitor">Existing vehicle monitor information</param>
         /// <returns>Updated vehicle monitor</returns>
-        // PUT api/values/5
+        [Route("api/VehicleMonitor/{id}")]
         [HttpPut]
         public HttpResponseMessage Put(string id, [FromBody] VehicleMonitor vehicleMonitor)
         {
@@ -107,7 +107,7 @@ namespace VehicleManagementSystemApi.Controllers
         /// </summary>
         /// <param name="id">Existing vehicle monitor id</param>
         /// <returns>Deleted vehicle monitor information</returns>
-        // DELETE api/values/5
+        [Route("api/VehicleMonitor/{id}")]
         [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {
