@@ -53,6 +53,21 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get DriverMessenger information.
+        /// </summary>
+        /// <param name="id">DriverMessengerId</param>
+        /// <returns>DriverMessenger</returns>
+        [Route("api/DriverMessenger/{id}")]
+        [HttpGet]
+        public HttpResponseMessage Get(string id)
+        {
+            HttpResponseMessage httpResponseMessage;
+            var driverMessenger = driverMessengerRepository.GetById(new ObjectId(id));
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driverMessenger);
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Create new Driver message.
         /// </summary>
         /// <param name="driverMessenger">Driver Messenger Information</param>

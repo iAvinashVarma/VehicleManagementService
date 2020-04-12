@@ -53,6 +53,21 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get VehicleMonitor information.
+        /// </summary>
+        /// <param name="id">VehicleMonitor Id</param>
+        /// <returns>VehicleMonitor</returns>
+        [Route("api/VehicleMonitor/{id}")]
+        [HttpGet]
+        public HttpResponseMessage Get(string id)
+        {
+            HttpResponseMessage httpResponseMessage;
+            var vehicleMonitor = vehicleMonitorRepository.GetById(new ObjectId(id));
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicleMonitor);
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Create new vehicle monitor.
         /// </summary>
         /// <param name="vehicleMonitor">Vehicle monitor Information</param>

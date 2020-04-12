@@ -42,6 +42,21 @@ namespace VehicleManagementSystemApi.Controllers
         }
 
         /// <summary>
+        /// Get Vehicle information.
+        /// </summary>
+        /// <param name="id">VehicleId</param>
+        /// <returns>Vehicle</returns>
+        [Route("api/Vehicle/{id}")]
+        [HttpGet]
+        public HttpResponseMessage Get(string id)
+        {
+            HttpResponseMessage httpResponseMessage;
+            var vehicle = vehicleRepository.GetById(new ObjectId(id));
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicle);
+            return httpResponseMessage;
+        }
+
+        /// <summary>
         /// Get vehicle information based on name.
         /// </summary>
         /// <param name="name">Name</param>
