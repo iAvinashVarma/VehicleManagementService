@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\VehiclePressureTest.cs" />
     <Compile Include="Model\VehicleTemperatureTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

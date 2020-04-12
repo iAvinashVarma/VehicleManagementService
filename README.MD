@@ -24,7 +24,7 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 * VEHICLEMANAGEMENT_CONNECTIONTYPE
 
-> Currently 2 is set to MongoDB type.
+> Currently 1 is set to MongoDB type.
 
 ### MongoDB Connection Variables
 
