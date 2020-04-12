@@ -63,7 +63,14 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var driverMessenger = driverMessengerRepository.GetById(new ObjectId(id));
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driverMessenger);
+            var filterDriverMessenger = new
+            {
+                _id = driverMessenger.Id,
+                vehicle = vehicleRepository.GetById(driverMessenger.VehicleId),
+                driver = driverRepository.GetById(driverMessenger.DriverId),
+                driverMessage = driverMessenger
+            };
+            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger);
             return httpResponseMessage;
         }
 
