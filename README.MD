@@ -8,6 +8,24 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ---
 
+## Environment Variables
+
+> Need to configure environment variables in process or user or system level.
+
+### Database Type Selection
+
+* VEHICLEMANAGEMENT_CONNECTIONTYPE
+
+> Currently 2 is set to MongoDB type.
+
+### MongoDB Connection Variables
+
+* MONGODB_USERNAME
+* MONGODB_CONNECTIONURL (E.g: vms-avi.azure.mongodb.net/test)
+* MONGODB_ACCESSKEY
+
+---
+
 ## Postman
 
 ### Documentation

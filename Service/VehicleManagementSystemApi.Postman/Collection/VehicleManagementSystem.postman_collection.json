@@ -1,31 +1,36 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "d355d213-5cee-4ee9-b30c-93860cad9dd2",
 		"name": "VehicleManagementSystem",
-		"_postman_id": "3648b5f9-3643-3304-8a30-800010527b3d",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Vehicle",
-			"description": "",
 			"item": [
 				{
 					"name": "AddVehicle",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"AudiQ7\",\r\n  \"registrationNumber\": \"NZ007\",\r\n  \"updatedDate\": \"2020-04-10T15:34:51.4426472+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T15:34:51.4426472+12:00\"\r\n}"
+							"raw": "{\r\n  \"name\": \"AudiQ7\",\r\n  \"registrationNumber\": \"NZ007\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle"
+							]
 						},
 						"description": "Add Vehicle"
 					},
@@ -34,17 +39,53 @@
 				{
 					"name": "GetVehicles",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle"
+							]
+						},
 						"description": "Get Vehicles"
+					},
+					"response": []
+				},
+				{
+					"name": "GetVehicleById",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e928a36d7745d1448278d56",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"5e928a36d7745d1448278d56"
+							]
+						},
+						"description": "GetVehicleById"
 					},
 					"response": []
 				},
 				{
 					"name": "GetVehiclesByName",
 					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle?name=AudiQ7",
 							"host": [
@@ -57,35 +98,63 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "AudiQ7",
-									"equals": true,
-									"description": ""
+									"value": "AudiQ7"
 								}
-							],
-							"variable": []
+							]
 						},
+						"description": "Get Vehicles By Name"
+					},
+					"response": []
+				},
+				{
+					"name": "GetVehicleByRegistrationNumber",
+					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
-						"description": "Get Vehicles By Name"
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle?registrationNumber=NZ007",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle"
+							],
+							"query": [
+								{
+									"key": "registrationNumber",
+									"value": "NZ007"
+								}
+							]
+						},
+						"description": "GetVehicleByRegistrationNumber"
 					},
 					"response": []
 				},
 				{
 					"name": "EditVehicle",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e90130cd7745c0fa4834240",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\",\r\n  \"updatedDate\": \"2020-04-10T15:34:51.4426472+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T15:34:51.4426472+12:00\"\r\n}"
+							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e90130cd7745c0fa4834240",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"5e90130cd7745c0fa4834240"
+							]
 						},
 						"description": "Edit Vehicle"
 					},
@@ -94,44 +163,61 @@
 				{
 					"name": "RemoveVehicle",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e9013bad7745c0fa4834242",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e92a8eed7745c38407e96af",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"5e92a8eed7745c38407e96af"
+							]
+						},
 						"description": "Remove Vehicle"
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Driver",
-			"description": "",
 			"item": [
 				{
 					"name": "AddDriver",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Driver",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Rocky\",\r\n  \"age\": 36,\r\n  \"phone\": \"22123456\",\r\n  \"identity\": \"NZ1234\",\r\n  \"updatedDate\": \"2020-04-10T18:33:41.4629247+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T18:33:41.4639219+12:00\"\r\n}"
+							"raw": "{\r\n  \"name\": \"BruceLee\",\r\n  \"age\": 31,\r\n  \"phone\": \"22123458\",\r\n  \"identity\": \"NZ12346\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver"
+							]
 						},
 						"description": "Add Driver"
 					},
@@ -140,19 +226,49 @@
 				{
 					"name": "GetDrivers",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Driver",
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver"
+							]
+						},
 						"description": "GetDrivers"
+					},
+					"response": []
+				},
+				{
+					"name": "GetDriverById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e92a8eed7745c38407e96af",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"5e92a8eed7745c38407e96af"
+							]
+						},
+						"description": "GetDriverById"
 					},
 					"response": []
 				},
 				{
 					"name": "GetDriversByName",
 					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver?name=Rocky",
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver?name=BruceLee",
 							"host": [
 								"{{VehicleManagementSystemApiUrl}}"
 							],
@@ -163,35 +279,63 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "Rocky",
-									"equals": true,
-									"description": ""
+									"value": "BruceLee"
 								}
-							],
-							"variable": []
+							]
 						},
+						"description": "GetDriversByName"
+					},
+					"response": []
+				},
+				{
+					"name": "GetDriverByIdentity",
+					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
-						"description": "GetDriversByName"
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver?identity=NZ12346",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver"
+							],
+							"query": [
+								{
+									"key": "identity",
+									"value": "NZ12346"
+								}
+							]
+						},
+						"description": "GetDriverByIdentity"
 					},
 					"response": []
 				},
 				{
 					"name": "UpdateDriver",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\",\r\n  \"updatedDate\": \"2020-04-10T15:34:51.4426472+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T15:34:51.4426472+12:00\"\r\n}"
+							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"5e8feba6d7745c2e845ca1b2"
+							]
 						},
 						"description": "Update Driver"
 					},
@@ -200,44 +344,61 @@
 				{
 					"name": "RemoveDriver",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"5e8feba6d7745c2e845ca1b2"
+							]
+						},
 						"description": "Remove Driver"
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "VehicleMonitor",
-			"description": "",
 			"item": [
 				{
 					"name": "AddVehicleMonitor",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 30\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 19\r\n  },\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 30\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 19\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor"
+							]
 						},
 						"description": "AddVehicleMonitor"
 					},
@@ -246,75 +407,126 @@
 				{
 					"name": "GetVehicleMonitor",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
 						"method": "GET",
 						"header": [],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetVehicleMonitorById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e91c02ed7745c42cc7415d1",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor",
+								"5e91c02ed7745c42cc7415d1"
+							]
+						},
+						"description": "GetVehicleMonitorById"
 					},
 					"response": []
 				},
 				{
 					"name": "UpdateVehicleMonitor",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 32\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 20\r\n  },\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 32\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 20\r\n  }\r\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor",
+								"5e901e2dd7745c345c9fe17d"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "RemoveVehicleMonitor",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor",
+								"5e901e2dd7745c345c9fe17d"
+							]
+						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "DriverMessenger",
-			"description": "",
 			"item": [
 				{
 					"name": "AddDriverMessenger",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"On the way to deliver the package.\",\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"message\": \"On the way to deliver the package.\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger"
+							]
 						},
 						"description": "AddDriverMessenger"
 					},
@@ -323,38 +535,76 @@
 				{
 					"name": "GetDriverMessenger",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger"
+							]
 						},
 						"description": "GetDriverMessenger"
 					},
 					"response": []
 				},
 				{
+					"name": "GetDriverMessengerById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e91c033d7745c42cc7415d2",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger",
+								"5e91c033d7745c42cc7415d2"
+							]
+						},
+						"description": "GetDriverMessengerById"
+					},
+					"response": []
+				},
+				{
 					"name": "UpdateDriverMessenger",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\",\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger",
+								"5e9056efd7745c264014f999"
+							]
 						},
 						"description": "UpdateDriverMessenger"
 					},
@@ -363,24 +613,35 @@
 				{
 					"name": "RemoveDriverMessenger",
 					"request": {
-						"url": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\",\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
 						},
+						"url": {
+							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"host": [
+								"{{VehicleManagementSystemApiUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger",
+								"5e9056efd7745c264014f999"
+							]
+						},
 						"description": "RemoveDriverMessenger"
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
