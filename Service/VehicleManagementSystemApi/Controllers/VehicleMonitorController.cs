@@ -68,7 +68,7 @@ namespace VehicleManagementSystemApi.Controllers
                 _id = vehicleMonitor.Id,
                 vehicle = vehicleRepository.GetById(vehicleMonitor.VehicleId),
                 driver = driverRepository.GetById(vehicleMonitor.DriverId),
-                vehicleMonitor = vehicleMonitor
+                vehicleMonitor
             };
             httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterVehicleMonitor);
             return httpResponseMessage;
