@@ -13,6 +13,7 @@ namespace VehicleManagementSystemApi.Controllers
     /// <summary>
     /// Driver Api
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DriverController : ApiController
     {
         private readonly IDriverRepository<Driver> driverRepository = null;

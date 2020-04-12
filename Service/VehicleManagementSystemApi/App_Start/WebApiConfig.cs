@@ -34,5 +34,11 @@ namespace VehicleManagementSystemApi
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
         }
+
+        public static void Register(HttpConfiguration config)
+        {
+            config.EnableCors();
+            config.MapHttpAttributeRoutes();
+        }
     }
 }

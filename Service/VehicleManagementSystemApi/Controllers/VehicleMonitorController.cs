@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using VehicleManagementSystemBusiness.Infrastructure.Factory;
 using VehicleManagementSystemBusiness.Infrastructure.Interface;
 using VehicleManagementSystemBusiness.Model;
@@ -13,6 +14,7 @@ namespace VehicleManagementSystemApi.Controllers
     /// <summary>
     /// Vehicle Monitor Api
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class VehicleMonitorController : ApiController
     {
         private readonly IVehicleRepository<Vehicle> vehicleRepository = null;
