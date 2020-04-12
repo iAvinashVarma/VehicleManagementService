@@ -41,6 +41,7 @@ namespace VehicleManagementSystemApi.Controllers
             var driverMessenger = driverMessengerRepository.GetAll().ToList();
             var filterDriverMessenger = driverMessenger.Select(m => new
             {
+                _id = m.Id,
                 vehicle = vehicleRepository.GetById(m.VehicleId),
                 driver = driverRepository.GetById(m.DriverId),
                 driverMessage = m

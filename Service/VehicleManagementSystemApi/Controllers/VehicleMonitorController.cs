@@ -41,6 +41,7 @@ namespace VehicleManagementSystemApi.Controllers
             var vehicleMonitors = vehicleMonitorRepository.GetAll().ToList();
             var filtervehicleMonitors = vehicleMonitors.Select(m => new
             {
+                _id = m.Id,
                 vehicle = vehicleRepository.GetById(m.VehicleId),
                 driver = driverRepository.GetById(m.DriverId),
                 vehicleMonitor = m
