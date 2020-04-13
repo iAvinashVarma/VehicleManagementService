@@ -12,9 +12,13 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ![](Images/VMSEntityRelationship.jpg)
 
+---
+
 ## DevOps Flow
 
 ![](Images/VMSDevOps.jpg)
+
+---
 
 ## Environment Variables
 
@@ -43,3 +47,63 @@ Vehicle Management System that allows the user to create, update and delete vehi
 ### Collection
 
 * [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d211da1cc40ce4fb6540)
+
+---
+
+## Things to improve
+
+### Client Side
+
+- [ ] Login and SingUp Page 
+- [ ] Add roles like Admin, Manager, Driver 
+- [ ] Add Pagination, Sorting and Filter
+- [ ] More responsive UI
+- [ ] UI Testing
+- [ ] Code Security and analysis
+
+### Server Side
+
+- [ ] Token based authentication
+- [ ] User Entity
+- [ ] Moq Tests
+- [ ] Data Driven Tests
+- [ ] Code Security and analysis
+
+---
+
+## Why Web API and React.
+
+* Web APIs provides a flexible way to communicate with context-based applications that can interact with the physical world, instead only through the UI.
+    * Vehicle Management System is expected to get the data from various devices which would be docked in different locations like Vehicle, Freezer, etcetera. Web API would be a right choice to consider for one of the reason and it supports wide range of IOT devices.
+* React is the one of the modern JavaScript frameworks which allows developer to create large scale web application that cab exchange the data. React provides better performance compared to other JavaScript frameworks.
+
+---
+
+## Technical Stack
+
+### Client
+
+ Tools & Technologies |  |
+--- | --- |
+Front End | ReactJS |
+Programming Language | JavaScript |
+Responsive UI Framework | Material, Bootstrap |
+Data Exchange | json |
+Server | NodeJs |
+DevOps | Azure DevOps |
+Cloud | Azure App Service, Firebase |
+Source Control | GitHub |
+Other Web | HTML, CSS |
+
+### Server
+
+ Tools & Technologies |  |
+--- | --- |
+Programming Language | C# |
+Data Exchange | json |
+Database | MongoDB (Configurable to other DB) |
+Server | ASP NET WebAPI |
+DevOps | Azure DevOps |
+Cloud | Azure App Service |
+API Testing | PostMan |
+Source Control | GitHub |
