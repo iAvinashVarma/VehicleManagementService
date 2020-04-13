@@ -266,6 +266,13 @@
 									"    pm.expect(jsonData.length).to.be.above(0);",
 									"});",
 									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleIds = jsonData.map(v => v._id);",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(vehicleIds.includes(vehicleId)).to.be.true;",
+									"});",
+									"",
 									"pm.test(\"Match VehicleName\", function () {",
 									"    let jsonData = pm.response.json();",
 									"    let vehicleNames = jsonData.map(v => v.name);",
@@ -501,7 +508,7 @@
 					"response": []
 				},
 				{
-					"name": "EditVehicle",
+					"name": "UpdateVehicle",
 					"event": [
 						{
 							"listen": "test",
@@ -554,7 +561,7 @@
 								"{{VehicleId}}"
 							]
 						},
-						"description": "Edit Vehicle"
+						"description": "Update Vehicle"
 					},
 					"response": []
 				},
@@ -708,6 +715,58 @@
 			"item": [
 				{
 					"name": "AddDriver",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6fb514e9-3d18-42dd-bb79-5c7c5541ab3b",
+								"exec": [
+									"let driverName = \"Ryan\";",
+									"let age = 29;",
+									"let phoneNumber = \"22452245\";",
+									"let identity = \"INISSGNZ01\";",
+									"let newDriverName = \"RyanFisherman\";",
+									"let newPhoneNumber = \"22452219\";",
+									"",
+									"pm.globals.set(\"DriverName\", driverName);",
+									"pm.globals.set(\"Age\", age);",
+									"pm.globals.set(\"PhoneNumber\", phoneNumber);",
+									"pm.globals.set(\"Identity\", identity);",
+									"pm.globals.set(\"NewDriverName\", newDriverName);",
+									"pm.globals.set(\"NewPhoneNumber\", newPhoneNumber);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "abf811a2-c961-4681-afbe-8140926d07db",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"DriverId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -718,7 +777,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"BruceLee\",\r\n  \"age\": 31,\r\n  \"phone\": \"22123458\",\r\n  \"identity\": \"NZ12346\"\r\n}"
+							"raw": "{\r\n  \"name\": \"{{DriverName}}\",\r\n  \"age\": {{Age}},\r\n  \"phone\": \"{{PhoneNumber}}\",\r\n  \"identity\": \"{{Identity}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{VMSUrl}}/api/Driver",
@@ -736,6 +795,70 @@
 				},
 				{
 					"name": "GetDrivers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1928a364-0a51-4823-b707-1cc95ca8f846",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Contains atleast one vehicle record\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverIds = jsonData.map(v => v._id);",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(driverIds.includes(driverId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverNames = jsonData.map(v => v.name);",
+									"    let driverName = pm.globals.get(\"DriverName\");",
+									"    pm.expect(driverNames.includes(driverName)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match PhoneNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let phoneNumbers = jsonData.map(v => v.phone);",
+									"    let phoneNumber = pm.globals.get(\"PhoneNumber\");",
+									"    pm.expect(phoneNumbers.includes(phoneNumber)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Age\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let ages = jsonData.map(v => v.age);",
+									"    let age = pm.globals.get(\"Age\");",
+									"    pm.expect(ages.includes(age)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Identity\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let identities = jsonData.map(v => v.identity);",
+									"    let identity = pm.globals.get(\"Identity\");",
+									"    pm.expect(identities.includes(identity)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -755,18 +878,72 @@
 				},
 				{
 					"name": "GetDriverById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec26c623-7bfb-49cf-820a-c090eb0a5628",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match DriverName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverName = pm.globals.get(\"DriverName\");",
+									"    pm.expect(jsonData.name).to.eql(driverName);",
+									"});",
+									"",
+									"pm.test(\"Match PhoneNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let phoneNumber = pm.globals.get(\"PhoneNumber\");",
+									"    pm.expect(jsonData.phone).to.eql(phoneNumber);",
+									"});",
+									"",
+									"pm.test(\"Match Age\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let age = pm.globals.get(\"Age\");",
+									"    pm.expect(jsonData.age).to.eql(age);",
+									"});",
+									"",
+									"pm.test(\"Match Identity\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let identity = pm.globals.get(\"Identity\");",
+									"    pm.expect(jsonData.identity).to.eql(identity);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VMSUrl}}/api/Driver/5e92a8eed7745c38407e96af",
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Driver",
-								"5e92a8eed7745c38407e96af"
+								"{{DriverId}}"
 							]
 						},
 						"description": "GetDriverById"
@@ -775,11 +952,70 @@
 				},
 				{
 					"name": "GetDriversByName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0bc10997-bea4-4e08-8f70-548689241d3a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverIds = jsonData.map(v => v._id);",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(driverIds.includes(driverId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverNames = jsonData.map(v => v.name);",
+									"    let driverName = pm.globals.get(\"DriverName\");",
+									"    pm.expect(driverNames.includes(driverName)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match PhoneNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let phoneNumbers = jsonData.map(v => v.phone);",
+									"    let phoneNumber = pm.globals.get(\"PhoneNumber\");",
+									"    pm.expect(phoneNumbers.includes(phoneNumber)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Age\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let ages = jsonData.map(v => v.age);",
+									"    let age = pm.globals.get(\"Age\");",
+									"    pm.expect(ages.includes(age)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Identity\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let identities = jsonData.map(v => v.identity);",
+									"    let identity = pm.globals.get(\"Identity\");",
+									"    pm.expect(identities.includes(identity)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VMSUrl}}/api/Driver?name=BruceLee",
+							"raw": "{{VMSUrl}}/api/Driver?name={{DriverName}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
@@ -790,7 +1026,7 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "BruceLee"
+									"value": "{{DriverName}}"
 								}
 							]
 						},
@@ -800,11 +1036,65 @@
 				},
 				{
 					"name": "GetDriverByIdentity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bcc2053-8190-48d6-be3a-e0a3b322d252",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match DriverName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverName = pm.globals.get(\"DriverName\");",
+									"    pm.expect(jsonData.name).to.eql(driverName);",
+									"});",
+									"",
+									"pm.test(\"Match PhoneNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let phoneNumber = pm.globals.get(\"PhoneNumber\");",
+									"    pm.expect(jsonData.phone).to.eql(phoneNumber);",
+									"});",
+									"",
+									"pm.test(\"Match Age\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let age = pm.globals.get(\"Age\");",
+									"    pm.expect(jsonData.age).to.eql(age);",
+									"});",
+									"",
+									"pm.test(\"Match Identity\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let identity = pm.globals.get(\"Identity\");",
+									"    pm.expect(jsonData.identity).to.eql(identity);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VMSUrl}}/api/Driver?identity=NZ12346",
+							"raw": "{{VMSUrl}}/api/Driver?identity={{Identity}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
@@ -815,7 +1105,7 @@
 							"query": [
 								{
 									"key": "identity",
-									"value": "NZ12346"
+									"value": "{{Identity}}"
 								}
 							]
 						},
@@ -825,6 +1115,35 @@
 				},
 				{
 					"name": "UpdateDriver",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eb0d2368-4e2f-404a-9719-b56ec73f633e",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -835,17 +1154,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\"\r\n}"
+							"raw": "{\r\n  \"name\": \"{{NewDriverName}}\",\r\n  \"age\": {{Age}},\r\n  \"phone\": \"{{NewPhoneNumber}}\",\r\n  \"identity\": \"{{Identity}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Driver",
-								"5e8feba6d7745c2e845ca1b2"
+								"{{DriverId}}"
 							]
 						},
 						"description": "Update Driver"
@@ -853,7 +1172,110 @@
 					"response": []
 				},
 				{
+					"name": "GetUpdatedDriverById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec26c623-7bfb-49cf-820a-c090eb0a5628",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match NewDriverName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverName = pm.globals.get(\"NewDriverName\");",
+									"    pm.expect(jsonData.name).to.eql(driverName);",
+									"});",
+									"",
+									"pm.test(\"Match NewPhoneNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let phoneNumber = pm.globals.get(\"NewPhoneNumber\");",
+									"    pm.expect(jsonData.phone).to.eql(phoneNumber);",
+									"});",
+									"",
+									"pm.test(\"Match Age\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let age = pm.globals.get(\"Age\");",
+									"    pm.expect(jsonData.age).to.eql(age);",
+									"});",
+									"",
+									"pm.test(\"Match Identity\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let identity = pm.globals.get(\"Identity\");",
+									"    pm.expect(jsonData.identity).to.eql(identity);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"{{DriverId}}"
+							]
+						},
+						"description": "GetUpdatedDriverById"
+					},
+					"response": []
+				},
+				{
 					"name": "RemoveDriver",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d690ca3-5a67-4a12-ad4e-ba02b8ec4996",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -867,14 +1289,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Driver",
-								"5e8feba6d7745c2e845ca1b2"
+								"{{DriverId}}"
 							]
 						},
 						"description": "Remove Driver"
@@ -888,7 +1310,55 @@
 			"name": "VehicleMonitor",
 			"item": [
 				{
-					"name": "AddVehicleMonitor",
+					"name": "AddVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fea115e5-ee2c-4c1d-9aed-50cadd08759a",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"VehicleId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dd0e6328-d087-47ac-9b3d-fa34667a6095",
+								"exec": [
+									"let vehicleName = \"AudiQ7\";",
+									"let registrationNumber = \"NZ007\";",
+									"let newVehicleName = \"AudiQ9\";",
+									"let newRegistrationNumber = \"NZ009\";",
+									"",
+									"pm.globals.set(\"VehicleName\", vehicleName);",
+									"pm.globals.set(\"RegistrationNumber\", registrationNumber);",
+									"pm.globals.set(\"NewVehicleName\", newVehicleName);",
+									"pm.globals.set(\"NewRegistrationNumber\", newRegistrationNumber);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -899,7 +1369,167 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 30\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 19\r\n  }\r\n}"
+							"raw": "{\r\n  \"name\": \"{{VehicleName}}\",\r\n  \"registrationNumber\": \"{{RegistrationNumber}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Vehicle",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle"
+							]
+						},
+						"description": "Add Vehicle"
+					},
+					"response": []
+				},
+				{
+					"name": "AddDriver",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6fb514e9-3d18-42dd-bb79-5c7c5541ab3b",
+								"exec": [
+									"let driverName = \"Ryan\";",
+									"let age = 29;",
+									"let phoneNumber = \"22452245\";",
+									"let identity = \"INISSGNZ01\";",
+									"let newDriverName = \"RyanFisherman\";",
+									"let newPhoneNumber = \"22452219\";",
+									"",
+									"pm.globals.set(\"DriverName\", driverName);",
+									"pm.globals.set(\"Age\", age);",
+									"pm.globals.set(\"PhoneNumber\", phoneNumber);",
+									"pm.globals.set(\"Identity\", identity);",
+									"pm.globals.set(\"NewDriverName\", newDriverName);",
+									"pm.globals.set(\"NewPhoneNumber\", newPhoneNumber);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "abf811a2-c961-4681-afbe-8140926d07db",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"DriverId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{DriverName}}\",\r\n  \"age\": {{Age}},\r\n  \"phone\": \"{{PhoneNumber}}\",\r\n  \"identity\": \"{{Identity}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Driver",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver"
+							]
+						},
+						"description": "Add Driver"
+					},
+					"response": []
+				},
+				{
+					"name": "AddVehicleMonitor",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a983d663-888d-4495-bfd5-5068ac076324",
+								"exec": [
+									"let latitude = -36.86;",
+									"let longitude = 174.76;",
+									"let pressurePsi = 30;",
+									"let temperatureCelsius = 19;",
+									"let newPressurePsi = 32;",
+									"let newTemperatureCelsius = 20;",
+									"",
+									"pm.globals.set(\"Latitude\", latitude);",
+									"pm.globals.set(\"Longitude\", longitude);",
+									"pm.globals.set(\"PressurePsi\", pressurePsi);",
+									"pm.globals.set(\"TemperatureCelsius\", temperatureCelsius);",
+									"pm.globals.set(\"NewPressurePsi\", newPressurePsi);",
+									"pm.globals.set(\"NewTemperatureCelsius\", newTemperatureCelsius);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6209631b-1496-451e-b2f8-f2a05aa0b797",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"VehicleMonitorId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleMonitorId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"vehicleId\": \"{{VehicleId}}\",\r\n  \"driverId\": \"{{DriverId}}\",\r\n  \"location\": {\r\n    \"latitude\": {{Latitude}},\r\n    \"longitude\": {{Longitude}}\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": {{PressurePsi}}\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": {{TemperatureCelsius}}\r\n  }\r\n}"
 						},
 						"url": {
 							"raw": "{{VMSUrl}}/api/VehicleMonitor",
@@ -916,7 +1546,86 @@
 					"response": []
 				},
 				{
-					"name": "GetVehicleMonitor",
+					"name": "GetVehicleMonitors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1094791c-4dd7-4357-86c1-a757e2d8d5f5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Contains atleast one vehicle record\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleMonitorId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleMonitorIds = jsonData.map(v => v._id);",
+									"    let vehicleMonitorId = pm.globals.get(\"VehicleMonitorId\");",
+									"    pm.expect(vehicleMonitorIds.includes(vehicleMonitorId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleIds = jsonData.map(v => v.vehicle._id);",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(vehicleIds.includes(vehicleId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverIds = jsonData.map(v => v.driver._id);",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(driverIds.includes(driverId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Latitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let latitudes = jsonData.map(l => l.vehicleMonitor.location.latitude);",
+									"    let latitude = pm.globals.get(\"Latitude\");",
+									"    pm.expect(latitudes.includes(latitude)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Longitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let longitudes = jsonData.map(l => l.vehicleMonitor.location.longitude);",
+									"    let longitude = pm.globals.get(\"Longitude\");",
+									"    pm.expect(longitudes.includes(longitude)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match PressurePsi\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let pressurePsis = jsonData.map(v => v.vehicleMonitor.pressure.pressurePsi);",
+									"    let pressurePsi = pm.globals.get(\"PressurePsi\");",
+									"    pm.expect(pressurePsis.includes(pressurePsi)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match TemperatureCelsius\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let temperatureCelsiuses = jsonData.map(v => v.vehicleMonitor.temperature.temperatureCelsius);",
+									"    let temperatureCelsius = pm.globals.get(\"TemperatureCelsius\");",
+									"    pm.expect(temperatureCelsiuses.includes(temperatureCelsius)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -935,18 +1644,84 @@
 				},
 				{
 					"name": "GetVehicleMonitorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a848365-27e0-45b6-8cdf-e3a5ac7d3490",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleMonitorId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleMonitorId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(jsonData.vehicle._id).to.eql(vehicleId);",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(jsonData.driver._id).to.eql(driverId);",
+									"});",
+									"",
+									"pm.test(\"Match Latitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let latitude = pm.globals.get(\"Latitude\");",
+									"    pm.expect(jsonData.vehicleMonitor.location.latitude).to.eql(latitude);",
+									"});",
+									"",
+									"pm.test(\"Match Longitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let longitude = pm.globals.get(\"Longitude\");",
+									"    pm.expect(jsonData.vehicleMonitor.location.longitude).to.eql(longitude);",
+									"});",
+									"",
+									"pm.test(\"Match PressurePsi\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let pressurePsi = pm.globals.get(\"PressurePsi\");",
+									"    pm.expect(jsonData.vehicleMonitor.pressure.pressurePsi).to.eql(pressurePsi);",
+									"});",
+									"",
+									"pm.test(\"Match TemperatureCelsius\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let temperatureCelsius = pm.globals.get(\"TemperatureCelsius\");",
+									"    pm.expect(jsonData.vehicleMonitor.temperature.temperatureCelsius).to.eql(temperatureCelsius);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e91c02ed7745c42cc7415d1",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/{{VehicleMonitorId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"VehicleMonitor",
-								"5e91c02ed7745c42cc7415d1"
+								"{{VehicleMonitorId}}"
 							]
 						},
 						"description": "GetVehicleMonitorById"
@@ -955,6 +1730,35 @@
 				},
 				{
 					"name": "UpdateVehicleMonitor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "90b15883-f82f-4cfa-8a63-aa06eb8c0c09",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -965,24 +1769,139 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 32\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 20\r\n  }\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"{{VehicleId}}\",\r\n  \"driverId\": \"{{DriverId}}\",\r\n  \"location\": {\r\n    \"latitude\": {{Latitude}},\r\n    \"longitude\": {{Longitude}}\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": {{NewPressurePsi}}\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": {{NewTemperatureCelsius}}\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/{{VehicleMonitorId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"VehicleMonitor",
-								"5e901e2dd7745c345c9fe17d"
+								"{{VehicleMonitorId}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
+					"name": "GetUpdatedVehicleMonitorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4c37b585-9e37-4984-aa26-6f7e2d08abd4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleMonitorId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleMonitorId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(jsonData.vehicle._id).to.eql(vehicleId);",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(jsonData.driver._id).to.eql(driverId);",
+									"});",
+									"",
+									"pm.test(\"Match Latitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let latitude = pm.globals.get(\"Latitude\");",
+									"    pm.expect(jsonData.vehicleMonitor.location.latitude).to.eql(latitude);",
+									"});",
+									"",
+									"pm.test(\"Match Longitude\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let longitude = pm.globals.get(\"Longitude\");",
+									"    pm.expect(jsonData.vehicleMonitor.location.longitude).to.eql(longitude);",
+									"});",
+									"",
+									"pm.test(\"Match NewPressurePsi\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let pressurePsi = pm.globals.get(\"NewPressurePsi\");",
+									"    pm.expect(jsonData.vehicleMonitor.pressure.pressurePsi).to.eql(pressurePsi);",
+									"});",
+									"",
+									"pm.test(\"Match NewTemperatureCelsius\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let temperatureCelsius = pm.globals.get(\"NewTemperatureCelsius\");",
+									"    pm.expect(jsonData.vehicleMonitor.temperature.temperatureCelsius).to.eql(temperatureCelsius);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/{{VehicleMonitorId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"VehicleMonitor",
+								"{{VehicleMonitorId}}"
+							]
+						},
+						"description": "GetUpdatedVehicleMonitorById"
+					},
+					"response": []
+				},
+				{
 					"name": "RemoveVehicleMonitor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "66107276-4363-4f50-b699-3318cbc7d9bf",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -996,16 +1915,132 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/{{VehicleMonitorId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"VehicleMonitor",
-								"5e901e2dd7745c345c9fe17d"
+								"{{VehicleMonitorId}}"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveDriver",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d690ca3-5a67-4a12-ad4e-ba02b8ec4996",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"{{DriverId}}"
+							]
+						},
+						"description": "Remove Driver"
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8033c4f9-7f6d-4c3d-8f4d-561bc5f4429e",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"{{VehicleId}}"
+							]
+						},
+						"description": "Remove Vehicle"
 					},
 					"response": []
 				}
@@ -1016,7 +2051,55 @@
 			"name": "DriverMessenger",
 			"item": [
 				{
-					"name": "AddDriverMessenger",
+					"name": "AddVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fea115e5-ee2c-4c1d-9aed-50cadd08759a",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"VehicleId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dd0e6328-d087-47ac-9b3d-fa34667a6095",
+								"exec": [
+									"let vehicleName = \"AudiQ7\";",
+									"let registrationNumber = \"NZ007\";",
+									"let newVehicleName = \"AudiQ9\";",
+									"let newRegistrationNumber = \"NZ009\";",
+									"",
+									"pm.globals.set(\"VehicleName\", vehicleName);",
+									"pm.globals.set(\"RegistrationNumber\", registrationNumber);",
+									"pm.globals.set(\"NewVehicleName\", newVehicleName);",
+									"pm.globals.set(\"NewRegistrationNumber\", newRegistrationNumber);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1027,7 +2110,159 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"message\": \"On the way to deliver the package.\"\r\n}"
+							"raw": "{\r\n  \"name\": \"{{VehicleName}}\",\r\n  \"registrationNumber\": \"{{RegistrationNumber}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Vehicle",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle"
+							]
+						},
+						"description": "Add Vehicle"
+					},
+					"response": []
+				},
+				{
+					"name": "AddDriver",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6fb514e9-3d18-42dd-bb79-5c7c5541ab3b",
+								"exec": [
+									"let driverName = \"Ryan\";",
+									"let age = 29;",
+									"let phoneNumber = \"22452245\";",
+									"let identity = \"INISSGNZ01\";",
+									"let newDriverName = \"RyanFisherman\";",
+									"let newPhoneNumber = \"22452219\";",
+									"",
+									"pm.globals.set(\"DriverName\", driverName);",
+									"pm.globals.set(\"Age\", age);",
+									"pm.globals.set(\"PhoneNumber\", phoneNumber);",
+									"pm.globals.set(\"Identity\", identity);",
+									"pm.globals.set(\"NewDriverName\", newDriverName);",
+									"pm.globals.set(\"NewPhoneNumber\", newPhoneNumber);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "abf811a2-c961-4681-afbe-8140926d07db",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"DriverId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{DriverName}}\",\r\n  \"age\": {{Age}},\r\n  \"phone\": \"{{PhoneNumber}}\",\r\n  \"identity\": \"{{Identity}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Driver",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver"
+							]
+						},
+						"description": "Add Driver"
+					},
+					"response": []
+				},
+				{
+					"name": "AddDriverMessenger",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "31a94d84-fe6d-428a-a81e-a7e369b39741",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"DriverMessengerId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverMessengerId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "39e86b97-18f5-439d-a528-274eaff39f48",
+								"exec": [
+									"let message = \"Delivering\";",
+									"let newMessage = \"Delivered\";",
+									"",
+									"pm.globals.set(\"Message\", message);",
+									"pm.globals.set(\"NewMessage\", newMessage);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"vehicleId\": \"{{VehicleId}}\",\r\n  \"driverId\": \"{{DriverId}}\",\r\n  \"message\": \"{{Message}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{VMSUrl}}/api/DriverMessenger",
@@ -1044,7 +2279,65 @@
 					"response": []
 				},
 				{
-					"name": "GetDriverMessenger",
+					"name": "GetDriverMessengers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c8ec5dd9-8418-4c4d-9a4a-f6d1093f4b85",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Contains atleast one vehicle record\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Match DriverMessengerId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverMessengerIds = jsonData.map(v => v._id);",
+									"    let driverMessengerId = pm.globals.get(\"DriverMessengerId\");",
+									"    pm.expect(driverMessengerIds.includes(driverMessengerId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleIds = jsonData.map(v => v.vehicle._id);",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(vehicleIds.includes(vehicleId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverIds = jsonData.map(v => v.driver._id);",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(driverIds.includes(driverId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match Message\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let messages = jsonData.map(v => v.driverMessage.message);",
+									"    let message = pm.globals.get(\"Message\");",
+									"    pm.expect(messages.includes(message)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1063,12 +2356,60 @@
 								"DriverMessenger"
 							]
 						},
-						"description": "GetDriverMessenger"
+						"description": "GetDriverMessengers"
 					},
 					"response": []
 				},
 				{
 					"name": "GetDriverMessengerById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0309b6d8-1ba3-48b3-8861-aeea056fa7b9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverMessengerId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverMessengerId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(jsonData.vehicle._id).to.eql(vehicleId);",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(jsonData.driver._id).to.eql(driverId);",
+									"});",
+									"",
+									"pm.test(\"Match Message\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let message = pm.globals.get(\"Message\");",
+									"    pm.expect(jsonData.driverMessage.message).to.eql(message);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1078,14 +2419,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{VMSUrl}}/api/DriverMessenger/5e91c033d7745c42cc7415d2",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/{{DriverMessengerId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"DriverMessenger",
-								"5e91c033d7745c42cc7415d2"
+								"{{DriverMessengerId}}"
 							]
 						},
 						"description": "GetDriverMessengerById"
@@ -1094,6 +2435,35 @@
 				},
 				{
 					"name": "UpdateDriverMessenger",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4744a3fb-4d4b-4218-b07a-10042ecde646",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1104,17 +2474,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\"\r\n}"
+							"raw": "{\r\n  \"vehicleId\": \"{{VehicleId}}\",\r\n  \"driverId\": \"{{DriverId}}\",\r\n  \"message\": \"{{NewMessage}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/{{DriverMessengerId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"DriverMessenger",
-								"5e9056efd7745c264014f999"
+								"{{DriverMessengerId}}"
 							]
 						},
 						"description": "UpdateDriverMessenger"
@@ -1122,7 +2492,109 @@
 					"response": []
 				},
 				{
+					"name": "GetUpdatedDriverMessengerById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "be86eb11-ba8a-4e37-8e22-ce3029f9205c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match DriverMessengerId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"DriverMessengerId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(jsonData.vehicle._id).to.eql(vehicleId);",
+									"});",
+									"",
+									"pm.test(\"Match DriverId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let driverId = pm.globals.get(\"DriverId\");",
+									"    pm.expect(jsonData.driver._id).to.eql(driverId);",
+									"});",
+									"",
+									"pm.test(\"Match NewMessage\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let message = pm.globals.get(\"NewMessage\");",
+									"    pm.expect(jsonData.driverMessage.message).to.eql(message);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{VMSUrl}}/api/DriverMessenger/{{DriverMessengerId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"DriverMessenger",
+								"{{DriverMessengerId}}"
+							]
+						},
+						"description": "GetUpdatedDriverMessengerById"
+					},
+					"response": []
+				},
+				{
 					"name": "RemoveDriverMessenger",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "397dde8e-d961-4d0c-b8c4-2e82a6784c92",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -1136,17 +2608,133 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\",\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VMSUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/{{DriverMessengerId}}",
 							"host": [
 								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"DriverMessenger",
-								"5e9056efd7745c264014f999"
+								"{{DriverMessengerId}}"
 							]
 						},
 						"description": "RemoveDriverMessenger"
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveDriver",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d690ca3-5a67-4a12-ad4e-ba02b8ec4996",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Driver/{{DriverId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Driver",
+								"{{DriverId}}"
+							]
+						},
+						"description": "Remove Driver"
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8033c4f9-7f6d-4c3d-8f4d-561bc5f4429e",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"{{VehicleId}}"
+							]
+						},
+						"description": "Remove Vehicle"
 					},
 					"response": []
 				}
@@ -1190,53 +2778,53 @@
 	],
 	"variable": [
 		{
-			"id": "04a3e904-5e09-4bcd-a91a-1f1cd90b5370",
+			"id": "185b65ba-c5db-4dff-9a80-5b6fcfd8db96",
 			"key": "VMSToken",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "92cd4f83-5e62-401e-969d-81744e7e9409",
+			"id": "0cf37120-5caa-47aa-ba2a-7cdd841009e0",
 			"key": "VMSAdminUser",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "0f83ffbf-b87c-478c-be06-f449b015060a",
+			"id": "5c62d3aa-78f0-41e2-acf6-453216f4d06b",
 			"key": "VMSAdminPassword",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4c3cfcf3-0798-4b95-969b-20749480c029",
+			"id": "6b320379-4a45-4cf9-acfc-acc31db93f98",
 			"key": "VMSGrantType",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "78cc5eac-3152-4e0f-81f4-7ef0f3b4cc52",
+			"id": "ea5cea6f-c2d1-47fe-b306-8d23959b8ef2",
 			"key": "VehicleId",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "7a611491-aaa7-4328-a8cc-b8d769655932",
+			"id": "82655846-5e4a-41b8-8d58-5da20b0d3a7d",
 			"key": "DriverId",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "c8426144-9532-49c1-9f74-ced0c96f1a95",
+			"id": "2c78fee1-6de3-4f91-8e2c-b1df03e172d4",
 			"key": "VehicleMonitorId",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "afbe0529-a619-4a04-8385-023d52881a8f",
+			"id": "3bbadfbd-8ce8-4a13-9980-7c14f89c205e",
 			"key": "DriverMessengerId",
 			"value": "",
 			"type": "string",

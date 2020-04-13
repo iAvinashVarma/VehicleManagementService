@@ -42,14 +42,21 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var driverMessenger = driverMessengerRepository.GetAll().ToList();
-            var filterDriverMessenger = driverMessenger.Select(m => new
+            if (driverMessenger.Any())
             {
-                _id = m.Id,
-                vehicle = vehicleRepository.GetById(m.VehicleId),
-                driver = driverRepository.GetById(m.DriverId),
-                driverMessage = m
-            });
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger);
+                var filterDriverMessenger = driverMessenger.Select(m => new
+                {
+                    _id = m.Id,
+                    vehicle = vehicleRepository.GetById(m.VehicleId),
+                    driver = driverRepository.GetById(m.DriverId),
+                    driverMessage = m
+                });
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger); 
+            }
+            else
+            {
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
             return httpResponseMessage;
         }
 
@@ -64,14 +71,21 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var driverMessenger = driverMessengerRepository.GetById(new ObjectId(id));
-            var filterDriverMessenger = new
+            if(driverMessenger != null)
             {
-                _id = driverMessenger.Id,
-                vehicle = vehicleRepository.GetById(driverMessenger.VehicleId),
-                driver = driverRepository.GetById(driverMessenger.DriverId),
-                driverMessage = driverMessenger
-            };
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger);
+                var filterDriverMessenger = new
+                {
+                    _id = driverMessenger.Id,
+                    vehicle = vehicleRepository.GetById(driverMessenger.VehicleId),
+                    driver = driverRepository.GetById(driverMessenger.DriverId),
+                    driverMessage = driverMessenger
+                };
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterDriverMessenger);
+            }
+            else
+            {
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
             return httpResponseMessage;
         }
 

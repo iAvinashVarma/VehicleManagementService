@@ -38,7 +38,7 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var vehicles = vehicleRepository.GetAll().ToList();
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicles);
+            httpResponseMessage = vehicles.Any() ? Request.CreateResponse(HttpStatusCode.OK, vehicles) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -53,7 +53,7 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var vehicle = vehicleRepository.GetById(new ObjectId(id));
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicle);
+            httpResponseMessage = vehicle != null ? Request.CreateResponse(HttpStatusCode.OK, vehicle) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -66,7 +66,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage GetByName(string name)
         {
             HttpResponseMessage httpResponseMessage;
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicleRepository.GetEntitiesByName(name));
+            var vehicles = vehicleRepository.GetEntitiesByName(name);
+            httpResponseMessage = vehicles.Any() ? Request.CreateResponse(HttpStatusCode.OK, vehicles) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -79,7 +80,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage GetByRegistrationNumber(string registrationNumber)
         {
             HttpResponseMessage httpResponseMessage;
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, vehicleRepository.GetEntityByRegistrationNumber(registrationNumber));
+            var vehicle = vehicleRepository.GetEntityByRegistrationNumber(registrationNumber);
+            httpResponseMessage = vehicle != null ? Request.CreateResponse(HttpStatusCode.OK, vehicle) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 

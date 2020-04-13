@@ -38,7 +38,7 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var drivers = driverRepository.GetAll().ToList();
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, drivers);
+            httpResponseMessage = drivers.Any() ? Request.CreateResponse(HttpStatusCode.OK, drivers) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -53,7 +53,7 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var driver = driverRepository.GetById(new ObjectId(id));
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driver);
+            httpResponseMessage = driver != null ? Request.CreateResponse(HttpStatusCode.OK, driver) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -66,7 +66,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage GetByName(string name)
         {
             HttpResponseMessage httpResponseMessage;
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driverRepository.GetEntitiesByName(name));
+            var drivers = driverRepository.GetEntitiesByName(name);
+            httpResponseMessage = drivers.Any() ? Request.CreateResponse(HttpStatusCode.OK, drivers) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 
@@ -79,7 +80,8 @@ namespace VehicleManagementSystemApi.Controllers
         public HttpResponseMessage GetByIdentity(string identity)
         {
             HttpResponseMessage httpResponseMessage;
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, driverRepository.GetEntityByIdentity(identity));
+            var driver = driverRepository.GetEntityByIdentity(identity);
+            httpResponseMessage = driver != null ? Request.CreateResponse(HttpStatusCode.OK, driver) : Request.CreateResponse(HttpStatusCode.NoContent);
             return httpResponseMessage;
         }
 

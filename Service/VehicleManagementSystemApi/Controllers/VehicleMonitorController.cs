@@ -42,14 +42,21 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var vehicleMonitors = vehicleMonitorRepository.GetAll().ToList();
-            var filtervehicleMonitors = vehicleMonitors.Select(m => new
+            if(vehicleMonitors.Any())
             {
-                _id = m.Id,
-                vehicle = vehicleRepository.GetById(m.VehicleId),
-                driver = driverRepository.GetById(m.DriverId),
-                vehicleMonitor = m
-            });
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filtervehicleMonitors);
+                var filtervehicleMonitors = vehicleMonitors.Select(m => new
+                {
+                    _id = m.Id,
+                    vehicle = vehicleRepository.GetById(m.VehicleId),
+                    driver = driverRepository.GetById(m.DriverId),
+                    vehicleMonitor = m
+                });
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filtervehicleMonitors);
+            }
+            else
+            {
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
             return httpResponseMessage;
         }
 
@@ -64,14 +71,21 @@ namespace VehicleManagementSystemApi.Controllers
         {
             HttpResponseMessage httpResponseMessage;
             var vehicleMonitor = vehicleMonitorRepository.GetById(new ObjectId(id));
-            var filterVehicleMonitor = new
+            if(vehicleMonitor != null)
             {
-                _id = vehicleMonitor.Id,
-                vehicle = vehicleRepository.GetById(vehicleMonitor.VehicleId),
-                driver = driverRepository.GetById(vehicleMonitor.DriverId),
-                vehicleMonitor
-            };
-            httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterVehicleMonitor);
+                var filterVehicleMonitor = new
+                {
+                    _id = vehicleMonitor.Id,
+                    vehicle = vehicleRepository.GetById(vehicleMonitor.VehicleId),
+                    driver = driverRepository.GetById(vehicleMonitor.DriverId),
+                    vehicleMonitor
+                };
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK, filterVehicleMonitor);
+            }
+            else
+            {
+                httpResponseMessage = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
             return httpResponseMessage;
         }
 
