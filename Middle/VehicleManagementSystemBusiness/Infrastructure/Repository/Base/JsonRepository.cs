@@ -86,9 +86,12 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Repository.Base
                 var updateEntity = entities.FirstOrDefault(p => p.Id == entity.Id);
                 if (updateEntity != null)
                 {
+                    var createdDate = updateEntity.CreatedDate;
+                    var modifiedDate = DateTime.Now;
+                    entities.Remove(updateEntity);
                     updateEntity = entity;
                     updateEntity.ModifiedDate = DateTime.Now;
-                    entities.Remove(updateEntity);
+                    updateEntity.CreatedDate = createdDate;
                     entities.Add(updateEntity);
                     SaveChanges(entities);
                 }

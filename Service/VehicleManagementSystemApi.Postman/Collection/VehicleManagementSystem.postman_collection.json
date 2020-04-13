@@ -1,15 +1,218 @@
 {
 	"info": {
-		"_postman_id": "d355d213-5cee-4ee9-b30c-93860cad9dd2",
+		"_postman_id": "c7a9ce5d-dc7c-4014-8f08-b259181a2155",
 		"name": "VehicleManagementSystem",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "GenerateTokenForAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1bd58e2b-09d8-4c8e-8a5f-c5acd281a004",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Check if token type is bearer\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.token_type).to.eql(\"bearer\");",
+									"});",
+									"",
+									"pm.test(\"Access token is present\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.access_token).not.eq(null);",
+									"    pm.environment.set(\"VMSToken\", jsonData.access_token);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"var schema = {",
+									"    \"access_token\": \"\",",
+									"    \"token_type\": \"\",",
+									"    \"expires_in\": 0",
+									"};",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"  var jsonData = pm.response.json();",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{VMSAdminUser}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{VMSAdminPassword}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{VMSGrantType}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/token",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GenerateTokenForUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c0f73282-f1d5-4fbd-b48a-9e678209bf6e",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Bearer token is present\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.token_type).to.eql(\"bearer\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"var schema = {",
+									"    \"access_token\": \"\",",
+									"    \"token_type\": \"\",",
+									"    \"expires_in\": 0",
+									"};",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"  let jsonData = pm.response.json();",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{VMSUrl}}/token",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Vehicle",
 			"item": [
 				{
 					"name": "AddVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fea115e5-ee2c-4c1d-9aed-50cadd08759a",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"VehicleId is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dd0e6328-d087-47ac-9b3d-fa34667a6095",
+								"exec": [
+									"let vehicleName = \"AudiQ7\";",
+									"let registrationNumber = \"NZ007\";",
+									"let newVehicleName = \"AudiQ9\";",
+									"let newRegistrationNumber = \"NZ009\";",
+									"",
+									"pm.globals.set(\"VehicleName\", vehicleName);",
+									"pm.globals.set(\"RegistrationNumber\", registrationNumber);",
+									"pm.globals.set(\"NewVehicleName\", newVehicleName);",
+									"pm.globals.set(\"NewRegistrationNumber\", newRegistrationNumber);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -20,12 +223,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"AudiQ7\",\r\n  \"registrationNumber\": \"NZ007\"\r\n}"
+							"raw": "{\r\n  \"name\": \"{{VehicleName}}\",\r\n  \"registrationNumber\": \"{{RegistrationNumber}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
+							"raw": "{{VMSUrl}}/api/Vehicle",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -38,16 +241,56 @@
 				},
 				{
 					"name": "GetVehicles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c91a37d4-33b0-4b28-a41b-b81ebf5e59df",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Contains atleast one vehicle record\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleNames = jsonData.map(v => v.name);",
+									"    let vehicleName = pm.globals.get(\"VehicleName\");",
+									"    pm.expect(vehicleNames.includes(vehicleName)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match RegistrationNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let registrationNumbers = jsonData.map(v => v.registrationNumber);",
+									"    let registrationNumber = pm.globals.get(\"RegistrationNumber\");",
+									"    pm.expect(registrationNumbers.includes(registrationNumber)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle",
+							"raw": "{{VMSUrl}}/api/Vehicle",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -60,21 +303,60 @@
 				},
 				{
 					"name": "GetVehicleById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a327ed5b-123b-4b16-ab9c-b216f23b5b0d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleName = pm.globals.get(\"VehicleName\");",
+									"    pm.expect(jsonData.name).to.eql(vehicleName);",
+									"});",
+									"",
+									"pm.test(\"Match RegistrationNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let registrationNumber = pm.globals.get(\"RegistrationNumber\");",
+									"    pm.expect(jsonData.registrationNumber).to.eql(registrationNumber);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e928a36d7745d1448278d56",
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Vehicle",
-								"5e928a36d7745d1448278d56"
+								"{{VehicleId}}"
 							]
 						},
 						"description": "GetVehicleById"
@@ -83,13 +365,58 @@
 				},
 				{
 					"name": "GetVehiclesByName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d919838-c207-4e4e-abbb-d5e40a80428a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleIds = jsonData.map(v => v._id);",
+									"    let vehicleId = pm.globals.get(\"VehicleId\");",
+									"    pm.expect(vehicleIds.includes(vehicleId)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleNames = jsonData.map(v => v.name);",
+									"    let vehicleName = pm.globals.get(\"VehicleName\");",
+									"    pm.expect(vehicleNames.includes(vehicleName)).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match RegistrationNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let registrationNumbers = jsonData.map(v => v.registrationNumber);",
+									"    let registrationNumber = pm.globals.get(\"RegistrationNumber\");",
+									"    pm.expect(registrationNumbers.includes(registrationNumber)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle?name=AudiQ7",
+							"raw": "{{VMSUrl}}/api/Vehicle?name={{VehicleName}}",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -98,7 +425,7 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "AudiQ7"
+									"value": "{{VehicleName}}"
 								}
 							]
 						},
@@ -108,13 +435,55 @@
 				},
 				{
 					"name": "GetVehicleByRegistrationNumber",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2971371d-c0e5-4e23-a945-ebe37e8902dc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match VehicleName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleName = pm.globals.get(\"VehicleName\");",
+									"    pm.expect(jsonData.name).to.eql(vehicleName);",
+									"});",
+									"",
+									"pm.test(\"Match RegistrationNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let registrationNumber = pm.globals.get(\"RegistrationNumber\");",
+									"    pm.expect(jsonData.registrationNumber).to.eql(registrationNumber);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle?registrationNumber=NZ007",
+							"raw": "{{VMSUrl}}/api/Vehicle?registrationNumber={{RegistrationNumber}}",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -123,7 +492,7 @@
 							"query": [
 								{
 									"key": "registrationNumber",
-									"value": "NZ007"
+									"value": "{{RegistrationNumber}}"
 								}
 							]
 						},
@@ -133,6 +502,35 @@
 				},
 				{
 					"name": "EditVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee35a287-5b5b-4663-adea-685b02f97c90",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Created\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -143,17 +541,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\"\r\n}"
+							"raw": "{\r\n  \"name\": \"{{NewVehicleName}}\",\r\n  \"registrationNumber\": \"{{NewRegistrationNumber}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e90130cd7745c0fa4834240",
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Vehicle",
-								"5e90130cd7745c0fa4834240"
+								"{{VehicleId}}"
 							]
 						},
 						"description": "Edit Vehicle"
@@ -161,7 +559,98 @@
 					"response": []
 				},
 				{
+					"name": "GetUpdatedVehicleById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a327ed5b-123b-4b16-ab9c-b216f23b5b0d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code name is OK\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Match VehicleId\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData._id).not.eq(null);",
+									"    pm.globals.set(\"VehicleId\", jsonData._id);",
+									"});",
+									"",
+									"pm.test(\"Match NewVehicleName\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let vehicleName = pm.globals.get(\"NewVehicleName\");",
+									"    pm.expect(jsonData.name).to.eql(vehicleName);",
+									"});",
+									"",
+									"pm.test(\"Match NewRegistrationNumber\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let registrationNumber = pm.globals.get(\"NewRegistrationNumber\");",
+									"    pm.expect(jsonData.registrationNumber).to.eql(registrationNumber);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
+							"host": [
+								"{{VMSUrl}}"
+							],
+							"path": [
+								"api",
+								"Vehicle",
+								"{{VehicleId}}"
+							]
+						},
+						"description": "GetVehicleById"
+					},
+					"response": []
+				},
+				{
 					"name": "RemoveVehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8033c4f9-7f6d-4c3d-8f4d-561bc5f4429e",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Status code name is Accepted\", function () {",
+									"    pm.response.to.have.status(\"Accepted\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is of application json\", function () {",
+									"    let contentType = pm.response.headers.get(\"Content-Type\");",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(contentType.startsWith(\"application/json\")).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check if update is successful\", function () {",
+									"    let status = pm.response.text();",
+									"    pm.expect(status).to.eq(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -175,19 +664,41 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Vehicle/5e92a8eed7745c38407e96af",
+							"raw": "{{VMSUrl}}/api/Vehicle/{{VehicleId}}",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
 								"Vehicle",
-								"5e92a8eed7745c38407e96af"
+								"{{VehicleId}}"
 							]
 						},
 						"description": "Remove Vehicle"
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8c51b822-685d-41f6-ad9a-ed23b7704d74",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "db8f1d82-3626-4cc9-935a-d992cc1bfdb6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -210,9 +721,9 @@
 							"raw": "{\r\n  \"name\": \"BruceLee\",\r\n  \"age\": 31,\r\n  \"phone\": \"22123458\",\r\n  \"identity\": \"NZ12346\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver",
+							"raw": "{{VMSUrl}}/api/Driver",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -229,9 +740,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver",
+							"raw": "{{VMSUrl}}/api/Driver",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -248,9 +759,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e92a8eed7745c38407e96af",
+							"raw": "{{VMSUrl}}/api/Driver/5e92a8eed7745c38407e96af",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -268,9 +779,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver?name=BruceLee",
+							"raw": "{{VMSUrl}}/api/Driver?name=BruceLee",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -293,9 +804,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver?identity=NZ12346",
+							"raw": "{{VMSUrl}}/api/Driver?identity=NZ12346",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -327,9 +838,9 @@
 							"raw": "{\r\n  \"name\": \"Audi Q7\",\r\n  \"registrationNumber\": \"NZ009\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"raw": "{{VMSUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -356,9 +867,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
+							"raw": "{{VMSUrl}}/api/Driver/5e8feba6d7745c2e845ca1b2",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -391,9 +902,9 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 30\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 19\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -410,9 +921,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -428,9 +939,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e91c02ed7745c42cc7415d1",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e91c02ed7745c42cc7415d1",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -457,9 +968,9 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"location\": {\r\n    \"latitude\": -36.8667,\r\n    \"longitude\": 174.7667\r\n  },\r\n  \"pressure\": {\r\n    \"pressurePsi\": 32\r\n  },\r\n  \"temperature\": {\r\n    \"temperatureCelsius\": 20\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -485,9 +996,9 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
+							"raw": "{{VMSUrl}}/api/VehicleMonitor/5e901e2dd7745c345c9fe17d",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -519,9 +1030,9 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e91bfa5d7745c42cc7415cf\",\r\n  \"driverId\": \"5e91bfedd7745c42cc7415d0\",\r\n  \"message\": \"On the way to deliver the package.\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
+							"raw": "{{VMSUrl}}/api/DriverMessenger",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -543,9 +1054,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger",
+							"raw": "{{VMSUrl}}/api/DriverMessenger",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -567,9 +1078,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e91c033d7745c42cc7415d2",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/5e91c033d7745c42cc7415d2",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -596,9 +1107,9 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -625,9 +1136,9 @@
 							"raw": "{\r\n  \"vehicleId\": \"5e90152fd7745c0fa4834243\",\r\n  \"driverId\": \"5e9013a6d7745c0fa4834241\",\r\n  \"message\": \"Delivered the package.\",\r\n  \"updatedDate\": \"2020-04-10T19:04:32.9698878+12:00\",\r\n  \"modifiedDate\": \"2020-04-10T19:04:32.9698878+12:00\"\r\n}"
 						},
 						"url": {
-							"raw": "{{VehicleManagementSystemApiUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
+							"raw": "{{VMSUrl}}/api/DriverMessenger/5e9056efd7745c264014f999",
 							"host": [
-								"{{VehicleManagementSystemApiUrl}}"
+								"{{VMSUrl}}"
 							],
 							"path": [
 								"api",
@@ -641,6 +1152,95 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{VMSToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "56f7da77-e011-4388-9daf-4cc68b746d4b",
+				"type": "text/javascript",
+				"exec": [
+					"pm.variables.set(\"VMSAdminUser\", \"admin\");",
+					"pm.variables.set(\"VMSAdminPassword\", \"admin\");",
+					"pm.variables.set(\"VMSGrantType\", \"password\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "78b8d4ff-e694-41d7-816e-7e1c74c71843",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "04a3e904-5e09-4bcd-a91a-1f1cd90b5370",
+			"key": "VMSToken",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "92cd4f83-5e62-401e-969d-81744e7e9409",
+			"key": "VMSAdminUser",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "0f83ffbf-b87c-478c-be06-f449b015060a",
+			"key": "VMSAdminPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4c3cfcf3-0798-4b95-969b-20749480c029",
+			"key": "VMSGrantType",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "78cc5eac-3152-4e0f-81f4-7ef0f3b4cc52",
+			"key": "VehicleId",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "7a611491-aaa7-4328-a8cc-b8d769655932",
+			"key": "DriverId",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "c8426144-9532-49c1-9f74-ced0c96f1a95",
+			"key": "VehicleMonitorId",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"id": "afbe0529-a619-4a04-8385-023d52881a8f",
+			"key": "DriverMessengerId",
+			"value": "",
+			"type": "string",
+			"disabled": true
 		}
 	],
 	"protocolProfileBehavior": {}
