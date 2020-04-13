@@ -83,7 +83,7 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ### Client
 
- Tools & Technologies |  |
+ Tools & Technologies | --  |
 --- | --- |
 Front End | ReactJS |
 Programming Language | JavaScript |

@@ -14,6 +14,7 @@ namespace VehicleManagementSystemApi.Controllers
     /// <summary>
     /// Vehicle Monitor Api
     /// </summary>
+    [Authorize(Roles = "admin")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class VehicleMonitorController : ApiController
     {

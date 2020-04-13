@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Concrete\Enum\ConnectionType.cs" />
+    <Compile Include="Concrete\Enum\Gender.cs" />
     <Compile Include="Concrete\Utils\ConnectionProcess.cs" />
     <Compile Include="Concrete\Utils\DatabaseCredential.cs" />
     <Compile Include="Concrete\Utils\FileProcess.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Infrastructure\Repository\Mongo\VehicleRepository.cs" />
     <Compile Include="Model\Driver.cs" />
     <Compile Include="Model\DriverMessenger.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Model\Vehicle.cs" />
     <Compile Include="Model\VehicleLocation.cs" />
     <Compile Include="Model\VehicleMonitor.cs" />
