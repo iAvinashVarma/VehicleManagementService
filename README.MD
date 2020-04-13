@@ -42,7 +42,7 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 ### Documentation
 
-* [Postman Documenter](https://documenter.getpostman.com/view/1806674/SzYgRFT8)
+* [Postman Documenter](https://documenter.getpostman.com/view/1806674/SzezdXbv)
 
 ### Collection
 

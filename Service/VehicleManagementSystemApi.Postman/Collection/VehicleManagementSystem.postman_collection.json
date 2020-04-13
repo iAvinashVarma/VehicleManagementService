@@ -130,17 +130,17 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "user",
+									"value": "{{VMSUser}}",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "user",
+									"value": "{{VMSUserPassword}}",
 									"type": "text"
 								},
 								{
 									"key": "grant_type",
-									"value": "password",
+									"value": "{{VMSGrantType}}",
 									"type": "text"
 								}
 							]
@@ -2759,9 +2759,11 @@
 				"id": "56f7da77-e011-4388-9daf-4cc68b746d4b",
 				"type": "text/javascript",
 				"exec": [
+					"pm.variables.set(\"VMSGrantType\", \"password\");",
 					"pm.variables.set(\"VMSAdminUser\", \"admin\");",
 					"pm.variables.set(\"VMSAdminPassword\", \"admin\");",
-					"pm.variables.set(\"VMSGrantType\", \"password\");"
+					"pm.variables.set(\"VMSUser\", \"user\");",
+					"pm.variables.set(\"VMSUserPassword\", \"user\");"
 				]
 			}
 		},
@@ -2778,53 +2780,51 @@
 	],
 	"variable": [
 		{
-			"id": "185b65ba-c5db-4dff-9a80-5b6fcfd8db96",
+			"id": "8d07f1be-f942-40d6-a220-2ca79a1ee596",
 			"key": "VMSToken",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "0cf37120-5caa-47aa-ba2a-7cdd841009e0",
+			"id": "9e58e0eb-7e3e-4cf5-a070-dfbbb33890cc",
 			"key": "VMSAdminUser",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5c62d3aa-78f0-41e2-acf6-453216f4d06b",
+			"id": "bd29ac19-793f-44fb-9709-d29a164131e8",
 			"key": "VMSAdminPassword",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6b320379-4a45-4cf9-acfc-acc31db93f98",
+			"id": "48ef8661-2df0-47f3-ab23-2c200339edbe",
 			"key": "VMSGrantType",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "ea5cea6f-c2d1-47fe-b306-8d23959b8ef2",
-			"key": "VehicleId",
+			"id": "e1a38043-fa2b-4f07-bacd-e77cb1dcb094",
+			"key": "VMSUser",
 			"value": "",
-			"type": "string",
-			"disabled": true
+			"type": "string"
 		},
 		{
-			"id": "82655846-5e4a-41b8-8d58-5da20b0d3a7d",
-			"key": "DriverId",
+			"id": "4dc4b8b6-11bc-4776-806a-46feccc90f8b",
+			"key": "VMSUserPassword",
 			"value": "",
-			"type": "string",
-			"disabled": true
+			"type": "string"
 		},
 		{
-			"id": "2c78fee1-6de3-4f91-8e2c-b1df03e172d4",
+			"id": "8b6beb7a-58ca-43c8-a0f6-953dd79c0956",
 			"key": "VehicleMonitorId",
 			"value": "",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "3bbadfbd-8ce8-4a13-9980-7c14f89c205e",
+			"id": "9df05340-d0bd-4afb-a96e-435148db8777",
 			"key": "DriverMessengerId",
 			"value": "",
 			"type": "string",
