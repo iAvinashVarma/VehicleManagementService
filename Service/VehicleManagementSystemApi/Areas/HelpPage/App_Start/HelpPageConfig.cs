@@ -56,7 +56,7 @@ namespace VehicleManagementSystemApi.Areas.HelpPage
                 {typeof(VehicleMonitor), new VehicleMonitor
                 {
                     DriverId = new ObjectId("5e9013a6d7745c0fa4834241"),
-                    VehicleId = new ObjectId("5dbd08a6dcb8333db8691345"),
+                    VehicleId = new ObjectId("5e91bfa5d7745c42cc7415cf"),
                     Location = new VehicleLocation
                     {
                         Latitude = -36.8667,
@@ -75,7 +75,7 @@ namespace VehicleManagementSystemApi.Areas.HelpPage
                 } },
                 { typeof(DriverMessenger), new DriverMessenger
                 {
-                    DriverId = new ObjectId("5e9013a6d7745c0fa4834241"),
+                    DriverId = new ObjectId("5e91bfa5d7745c42cc7415cf"),
                     VehicleId = new ObjectId("5dbd08a6dcb8333db8691345"),
                     Message = "On the way to deliver the package.",
                     CreatedDate = DateTime.Now,

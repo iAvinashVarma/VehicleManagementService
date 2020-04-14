@@ -28,13 +28,37 @@ Vehicle Management System that allows the user to create, update and delete vehi
 
 * VEHICLEMANAGEMENT_CONNECTIONTYPE
 
-> Currently 1 is set to MongoDB type.
+```powershell
+PS > [System.Environment]::GetEnvironmentVariable('VEHICLEMANAGEMENT_CONNECTIONTYPE')
+```
+
+> Set VEHICLEMANAGEMENT_CONNECTIONTYPE to 1, inorder to activate MongoDB type.
+
+```powershell
+PS > [System.Environment]::SetEnvironmentVariable('VEHICLEMANAGEMENT_CONNECTIONTYPE', 1)
+```
 
 ### MongoDB Connection Variables
 
 * MONGODB_USERNAME
 * MONGODB_CONNECTIONURL (E.g: vms-avi.azure.mongodb.net/test)
 * MONGODB_ACCESSKEY
+
+#### Get MongoDB Connection Variables
+
+```powershell
+PS > [System.Environment]::GetEnvironmentVariable('MONGODB_USERNAME')
+PS > [System.Environment]::GetEnvironmentVariable('MONGODB_CONNECTIONURL')
+PS > [System.Environment]::GetEnvironmentVariable('MONGODB_ACCESSKEY')
+```
+
+#### Set MongoDB Connection Variables
+
+```powershell
+PS > [System.Environment]::SetEnvironmentVariable('MONGODB_USERNAME', 'MongoDBUserName')
+PS > [System.Environment]::SetEnvironmentVariable('MONGODB_CONNECTIONURL', 'vms-avi.azure.mongodb.net/test')
+PS > [System.Environment]::SetEnvironmentVariable('MONGODB_ACCESSKEY', 'MongoDBPassword')
+```
 
 ---
 

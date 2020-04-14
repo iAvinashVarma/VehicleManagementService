@@ -9,26 +9,28 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Factory
 {
     public static class VehicleFactory
     {
-        public static IVehicleRepository<Vehicle> Repository
+        static VehicleFactory()
         {
-            get
+            SetVehicleFactory();
+        }
+
+        private static void SetVehicleFactory()
+        {
+            var connectionType = ConnectionProcess.Instance.ConnectionType;
+            switch (connectionType)
             {
-                IVehicleRepository<Vehicle> vehicleRepository;
-                var connectionType = ConnectionProcess.Instance.ConnectionType;
-                switch (connectionType)
-                {
-                    case ConnectionType.MongoDb:
-                        vehicleRepository = new MongoRepo.VehicleRepository();
-                        break;
-                    case ConnectionType.Json:
-                        vehicleRepository = new JsonRepo.VehicleRepository();
-                        break;
-                    default:
-                        vehicleRepository = new JsonRepo.VehicleRepository();
-                        break;
-                }
-                return vehicleRepository;
+                case ConnectionType.MongoDb:
+                    Repository = new MongoRepo.VehicleRepository();
+                    break;
+                case ConnectionType.Json:
+                    Repository = new JsonRepo.VehicleRepository();
+                    break;
+                default:
+                    Repository = new JsonRepo.VehicleRepository();
+                    break;
             }
         }
+
+        public static IVehicleRepository<Vehicle> Repository { get; private set; }
     }
 }

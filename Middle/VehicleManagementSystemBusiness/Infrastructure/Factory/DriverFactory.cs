@@ -9,26 +9,28 @@ namespace VehicleManagementSystemBusiness.Infrastructure.Factory
 {
     public static class DriverFactory
     {
-        public static IDriverRepository<Driver> Repository
+        static DriverFactory()
         {
-            get
+            SetDriverFactory();
+        }
+
+        private static void SetDriverFactory()
+        {
+            var connectionType = ConnectionProcess.Instance.ConnectionType;
+            switch (connectionType)
             {
-                IDriverRepository<Driver> driverRepository;
-                var connectionType = ConnectionProcess.Instance.ConnectionType;
-                switch (connectionType)
-                {
-                    case ConnectionType.MongoDb:
-                        driverRepository = new MongoRepo.DriverRepository();
-                        break;
-                    case ConnectionType.Json:
-                        driverRepository = new JsonRepo.DriverRepository();
-                        break;
-                    default:
-                        driverRepository = new JsonRepo.DriverRepository();
-                        break;
-                }
-                return driverRepository;
+                case ConnectionType.MongoDb:
+                    Repository = new MongoRepo.DriverRepository();
+                    break;
+                case ConnectionType.Json:
+                    Repository = new JsonRepo.DriverRepository();
+                    break;
+                default:
+                    Repository = new JsonRepo.DriverRepository();
+                    break;
             }
         }
+
+        public static IDriverRepository<Driver> Repository { get; private set; }
     }
 }
